@@ -5,7 +5,6 @@
 一个免费开源的后台管理系统模板。使用最新的主流技术开发，开箱即用（主要还是用于学习参考！），主要向以下两个高 star 的后台管理系统模板进行学习，并根据需求进行取舍和优化改进。
 
 - [vue-vben-admin](https://github.com/anncwb/vue-vben-admin) 使用了最新的`vue3`,`vite2`,`TypeScript`,`antdv`等主流技术开发 (代码量非常庞大和复杂...)
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin) 是一个后台前端解决方案，它基于`vue2` 和 `element ui` (作者还没开发出 vue3 版本)
 
 没有 TypeScript！！！！
 
@@ -100,13 +99,13 @@
 - 获取项目代码
 
 ```sh http://fanyibar.top/vite/index.html 👈 戳它戳他
-git clone git@code.aliyun.com:Shangri_la/prometheus-web.git
+git clone git@github.com:Honest-Team/vue3-vite-admin.git
 ```
 
 - 安装项目依赖
 
 ```sh
-cd prometheus-web/
+cd vue3-vite-admin/
 npm install
 npm run dev
 ```
