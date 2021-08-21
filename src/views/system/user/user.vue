@@ -75,7 +75,6 @@
                     },
                     {
                         label: '昵称',
-                        fixed: true,
                         prop: 'nickName',
                         sort: true,
                     },
@@ -116,6 +115,7 @@
                     total: 0,
                     data: [],
                 },
+
                 buttonGroup: [
                     {
                         label: '编辑', //复制

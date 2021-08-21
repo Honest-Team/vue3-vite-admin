@@ -1,21 +1,22 @@
 <template>
-    <div style=";padding: 0 20px;background: white">
+    <div style=";padding: 0 20px 20px;background: white">
         <el-table
                 ref="dataTable"
                 highlight-current-row
                 :data="getTableData.data"
                 :height="height"
-                :border="tableBorder"
+                :border="border"
                 :tree-props="treeProps"
                 :row-key="rowKey"
                 :expand-row-keys="expands"
                 style="width: 100%"
+                :default-expand-all="expandAll"
                 @selection-change="handleSelectionChange"
                 :header-cell-style="{background:'#f5f7fa',color:'#002640'}"
         >
             <!--多选-->
             <el-table-column
-                    v-if="selection.eventName"
+                    v-if="selection && selection.eventName"
                     type="selection"
                     width="46">
             </el-table-column>
@@ -28,9 +29,25 @@
 
 
             <template v-for="col in columns">
+                <!--状态 1 开启 0 停用-->
+                <el-table-column
+                        v-if="col.type === 'enabled'"
+                        :sortable="col.sort"
+                        :align="col.align ? col.align : 'center'"
+                        :prop="col.prop"
+                        :label="col.label"
+                        :width="col.width"
+                >
+                    <template #default="scope">
+                        <el-tag v-if="scope.row[col.prop] === 1" type="success">开启</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 0" type="danger">停用</el-tag>
+                    </template>
+                </el-table-column>
+
+
                 <!-- 格式化各种日期 - 名称自定义 type设置为formatTime 时生效-->
                 <el-table-column
-                        v-if="col.type === 'formatTime' ||col.prop ===  'createTime' ||col.prop ===  'updateTime'"
+                        v-else-if="col.type === 'formatTime' ||col.prop ===  'createTime' ||col.prop ===  'updateTime'"
                         :sortable="col.sort"
                         :align="col.align ? col.align : 'center'"
                         :prop="col.prop"
@@ -51,7 +68,8 @@
                 ></el-table-column>
             </template>
             <!--表格按钮操作-->
-            <el-table-column label="操作" v-if="buttonGroup.length > 0" :width="tableConfig.buttonWidth" align="center">
+            <el-table-column label="操作" v-if="buttonGroup.length > 0" :width="tableConfig.buttonWidth" fixed="right"
+                             align="center">
                 <template #default="scope">
                     <el-button-group>
                         <!-- 控制显示隐藏 -->
@@ -93,6 +111,7 @@
         </el-table>
         <!--分页 hide-on-single-page-->
         <el-pagination
+                v-if="getTableData.page"
                 style="display: flex; justify-content: center;height: 50px;align-items: center;"
                 small
                 current-page="currentPage"
@@ -129,10 +148,15 @@
                 data: []                 // 默认多选的数据
             },
             indexNo: {type: Boolean, default: false}, // 是否展示序号
-            tableBorder: {type: Boolean, default: false}, // 是否带有纵向边框
-            rowKey: {type: String},
-            treeProps: {type: Object},
-            isExpand: {type: Boolean, default: false},
+            border: {type: Boolean, default: false}, // 是否带有纵向边框
+            rowKey: {type: String, default: "id"},
+            treeProps: {
+                type: Object, default: {
+                    hasChildren: 'hasChildren',
+                    children: 'children'
+                }
+            },
+            expandAll: {type: Boolean, default: false},
             expands: {type: Array},
         },
         setup(props, {emit}) {
@@ -152,18 +176,20 @@
                 }
             })
             // 默认多选选中
-            watch(() => props.selection.data, (newValue, oldValue) => {
-                const selectionData = toRaw(newValue);
-                if (selectionData.length > 0) {
-                    selectionData.forEach(ele => {
-                        dataTable.value.toggleRowSelection(ele);
-                    })
-                }
-            })
+            if (props.selection) {
+                watch(() => props.selection.data, (newValue, oldValue) => {
+                    const selectionData = toRaw(newValue);
+                    if (selectionData.length > 0) {
+                        selectionData.forEach(ele => {
+                            dataTable.value.toggleRowSelection(ele);
+                        })
+                    }
+                })
+            }
 
             // 操作按钮
-            function buttonHandler(eventName, scope) {
-                emit(eventName, scope)
+            function buttonHandler(eventName, ...scope) {
+                emit(eventName, ...scope)
             }
 
             function handleCommand(drop) {

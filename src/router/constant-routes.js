@@ -105,6 +105,12 @@ export default [
         component: () => import('/src/views/system/menu/menu.vue'),
         meta: { title: '菜单管理', icon: '' },
       },
+      {
+        path: 'dept',
+        name: 'dept',
+        component: () => import('/src/views/system/dept/dept.vue'),
+        meta: { title: '部门管理', icon: '' },
+      },
     ],
   },
   {
