@@ -29,6 +29,11 @@
 
 
             <template v-for="col in columns">
+
+
+
+
+
                 <!--状态 1 开启 0 停用-->
                 <el-table-column
                         v-if="col.type === 'enabled'"
@@ -41,6 +46,22 @@
                     <template #default="scope">
                         <el-tag v-if="scope.row[col.prop] === 1" type="success">开启</el-tag>
                         <el-tag v-if="scope.row[col.prop] === 0" type="danger">停用</el-tag>
+                    </template>
+                </el-table-column>
+
+                <!--菜单 2 按钮  1 菜单 0 目录 -->
+                <el-table-column
+                        v-else-if="col.type === 'menuType'"
+                        :sortable="col.sort"
+                        :align="col.align ? col.align : 'center'"
+                        :prop="col.prop"
+                        :label="col.label"
+                        :width="col.width"
+                >
+                    <template #default="scope">
+                        <el-tag v-if="scope.row[col.prop] === 0" type="success">目录</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 1" type="danger">菜单</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 2" type="warning">按钮</el-tag>
                     </template>
                 </el-table-column>
 
@@ -188,12 +209,12 @@
             }
 
             // 操作按钮
-            function buttonHandler(eventName, ...scope) {
-                emit(eventName, ...scope)
+            function buttonHandler(eventName, scope) {
+                emit(eventName, {...scope})
             }
 
             function handleCommand(drop) {
-                emit(drop.eventName, drop.scope)
+                emit(drop.eventName, {...drop.scope})
             }
 
             function handleSizeChange(val) {
