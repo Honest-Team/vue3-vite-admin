@@ -34,7 +34,7 @@
 
     <!--添加/编辑部门弹框-->
     <el-dialog
-            title="添加菜单"
+            :title="formData.id ? '编辑菜单' : '添加菜单'"
             v-model="dialogVisible"
             width="45%"
     >
@@ -167,8 +167,8 @@
 
             </div>
 
-            <el-form-item label="上级类目" prop="parentId">
-                <treeselect v-model="formData.parentId" :options="pidOptions" :normalizer="normalizer"/>
+            <el-form-item label="上级类目" prop="parentId" v-if="dialogVisible">
+                <treeselect ref="treeselect"  v-model="formData.parentId"  :options="pidOptions" :normalizer="normalizer"/>
             </el-form-item>
         </el-form>
 
@@ -200,7 +200,7 @@
 <script>
     import DataTable from '@/components/DataTable/index.vue'
     import {getTreeByCondition, save, update, deleteByIds} from '@/api/sysMenuService'
-    import {onMounted, reactive, ref} from 'vue'
+    import {onMounted,watch, reactive, ref,toRefs} from 'vue'
     import {getTree} from './menu.js'
     import Treeselect from 'vue3-treeselect'
     import 'vue3-treeselect/dist/vue3-treeselect.css'
@@ -216,6 +216,9 @@
             // 下拉框
             let pidOptions = ref([]);
             let formRef = ref();
+            let treeselect = ref();
+
+
 
             function normalizer(node) {
                 return {
@@ -317,6 +320,7 @@
                 cached: 0, // 0 否、1 是、
                 name: "",
                 path: "",
+                parentId: "0", // 上级目录
             })
 
             // 打开弹框
@@ -401,7 +405,7 @@
             }
 
             function edit(scope) {
-                formData.parentId = scope.parentId; // bug ： https://blog.csdn.net/qq_35473192/article/details/118362562
+                formData.parentId = scope.parentId; // bug ： https://blog.csdn.net/qq_35473192/article/details/118362562 暂时通过v-if解决
                 formData.type = scope.type;
                 formData.id = scope.id;
                 formData.iFrame = scope.iFrame;
@@ -444,6 +448,7 @@
                 normalizer,
                 pidOptions,
                 formRef,
+                treeselect,
                 formData,
                 formDataRules,
                 dialogVisible,

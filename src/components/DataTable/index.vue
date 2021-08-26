@@ -231,7 +231,7 @@
 
             // 多选
             function handleSelectionChange(val) {
-                emit(props.selection.eventName, val)
+                emit(props.selection.eventName, [...val])
             }
 
             return {

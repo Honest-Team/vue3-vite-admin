@@ -48,7 +48,7 @@
 
     <!--添加/编辑部门弹框-->
     <el-dialog
-            title="添加部门"
+            :title="formData.deptId ? '编辑部门' : '添加部门'"
             v-model="dialogVisible"
             width="30%"
     >
@@ -65,7 +65,7 @@
                     <el-radio label="0">停用</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="上级部门" prop="pid">
+            <el-form-item label="上级部门" prop="pid" v-if="dialogVisible">
                 <treeselect v-model="formData.pid" :options="pidOptions" :normalizer="normalizer"/>
             </el-form-item>
         </el-form>
@@ -285,9 +285,7 @@
             }
 
             function edit(scope) {
-                const num =  JSON.parse(JSON.stringify(scope.pid))
-                console.log(num);
-                formData.pid = num; // bug 直接传入数值可以，scope.pid = 31 不行： https://blog.csdn.net/qq_35473192/article/details/118362562
+                formData.pid = scope.pid; // bug 直接传入数值可以，scope.pid = 31 不行： https://blog.csdn.net/qq_35473192/article/details/118362562
                 formData.deptId = scope.deptId;
                 formData.name = scope.name;
                 formData.deptSort = scope.deptSort;

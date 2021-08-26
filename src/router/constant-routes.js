@@ -84,7 +84,6 @@ export default [
         name: 'user',
         component: () => import('/src/views/system/user/user.vue'),
         meta: { title: '用户管理', icon: '' },
-        // children: [,]
       },
       {
         path: 'addUser',
@@ -98,6 +97,13 @@ export default [
         name: 'role',
         component: () => import('/src/views/system/role/role.vue'),
         meta: { title: '角色管理', icon: '' },
+      },
+      {
+        path: 'editRole',
+        name: 'editRole',
+        hidden: true,
+        component: () => import('/src/views/system/role/component/editRole.vue'),
+        meta: {title: '编辑角色'},
       },
       {
         path: 'menu',

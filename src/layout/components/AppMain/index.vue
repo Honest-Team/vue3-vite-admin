@@ -1,11 +1,13 @@
 <template>
     <div class="app-main" :style="{ width: 'calc(100vw - '+ sidebarWidth + ')'}">
         <router-view v-slot="{ Component }">
-            <!--      <transition name="fade-transform" mode="out-in">-->
-            <keep-alive :include="cachedViewNames">
-                <component :is="Component"/>
-            </keep-alive>
-            <!--      </transition>-->
+            <component :is="Component"/>
+
+<!--            <transition name="fade-transform" mode="out-in">-->
+<!--                <keep-alive :include="cachedViewNames">-->
+<!--                    <component :is="Component"/>-->
+<!--                </keep-alive>-->
+<!--            </transition>-->
         </router-view>
     </div>
 </template>
