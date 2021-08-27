@@ -1,7 +1,7 @@
 import request from '/src/utils/request'
 
-export function getOne(data) {
-    return request.get('/sysDictDetailService/' + data)
+export function getList() {
+    return request.get('/sysDictDetailService')
 }
 
 export function queryByCondition(data) {

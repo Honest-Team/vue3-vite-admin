@@ -34,7 +34,6 @@
         components: {Settings, AppMain, Sidebar, NavBar, TabBar},
         setup() {
 
-
             const {state, sidebarWidth, handleSidebarToggle} = useLayout()
             const {fixedHeader, isMobile, unfoldSidebar, showTabBar} = toRefs(state)
 

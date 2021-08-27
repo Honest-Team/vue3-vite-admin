@@ -1,4 +1,5 @@
 import {getCurrentUser as _getCurrentUser} from '/src/api/sysUserService'
+
 import constantRoutes from '/src/router/constant-routes'
 import {reactive} from 'vue'
 import router from '/src/router'
@@ -16,7 +17,6 @@ export const currentUser = reactive({
 })
 
 
-
 // 获取用户信息并动态添加路由  use in router/beforeEach()
 export function getCurrentUser() {
     return _getCurrentUser().then(res => {
@@ -24,3 +24,4 @@ export function getCurrentUser() {
     })
 
 }
+

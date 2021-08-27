@@ -7,7 +7,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 // import '/src/styles/element-variables.scss'
 
-import global from '@/utils/global'
+import global from '@/store/global'
 
 /* 引入自己的样式、JS文和组件 */
 import '/src/styles/common.scss'

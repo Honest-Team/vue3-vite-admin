@@ -4,7 +4,10 @@ import {globalRouteUpdateHook} from '/src/layout/components/useLayout'
 import {getToken} from '/src/utils/storage'
 import constantRoutes from './constant-routes'
 
+
+
 import {getCurrentUser} from '/src/store/permission.js'
+import {getDictionary} from '/src/store/global.js'
 
 
 // [官方文档指路]:(https://next.router.vuejs.org/zh/guide/index.html)
@@ -46,7 +49,7 @@ router.beforeEach((to, from, next) => {
     if (!token && !PUBLIC_PATH.has(to.path)) {
         return {path: '/login', query: {redirect: to.fullPath}}
     }
-
+    getDictionary();
     // 获取当前用户
     // getCurrentUser().then(res => {
     //

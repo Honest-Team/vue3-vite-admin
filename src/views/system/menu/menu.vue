@@ -47,7 +47,7 @@
                 </el-button-group>
             </el-form-item>
 
-            <!--菜单-->
+            <!--目录-->
             <div v-if="formData.type === 0">
                 <el-form-item label="菜单图标">
                     <el-input v-model="formData.icon"></el-input>
@@ -63,9 +63,9 @@
                     </el-form-item>
                     <el-form-item label="菜单可见">
                         <el-button-group>
-                            <el-button @click="formData.hidden = 1" :type="formData.hidden === 1?'primary' :''">否
+                            <el-button @click="formData.hidden = 1" :type="formData.hidden === 1?'primary' :''">是
                             </el-button>
-                            <el-button @click="formData.hidden = 0" :type="formData.hidden === 0?'primary' :''">是
+                            <el-button @click="formData.hidden = 0" :type="formData.hidden === 0?'primary' :''">否
                             </el-button>
                         </el-button-group>
                     </el-form-item>
@@ -88,7 +88,7 @@
 
             </div>
 
-            <!--目录-->
+            <!--菜单-->
             <div v-if="formData.type === 1">
                 <el-form-item label="菜单图标">
                     <el-input v-model="formData.icon"></el-input>
@@ -264,6 +264,7 @@
                     {
                         label: '菜单可见',
                         prop: 'hidden',
+                        type: 'menu_hidden',
                         sort: true,
                     },
                     {

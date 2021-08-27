@@ -32,9 +32,24 @@
             <template v-for="col in columns">
 
 
+                <!-- 针对字典表翻译-->
+                <el-table-column
+                        v-if="dict[col.type]"
+                        :sortable="col.sort"
+                        :align="col.align ? col.align : 'center'"
+                        :prop="col.prop"
+                        :label="col.label"
+                        :width="col.width"
+                >
+                    <template #default="scope">
+                        <span>{{ formatDict(scope.row[col.prop],dict[col.type])}}</span>
+                    </template>
+                </el-table-column>
+
+
                 <!--状态 1 开启 0 停用-->
                 <el-table-column
-                        v-if="col.type === 'enabled'"
+                        v-else-if="col.type === 'enabled'"
                         :sortable="col.sort"
                         :align="col.align ? col.align : 'center'"
                         :prop="col.prop"
@@ -146,7 +161,7 @@
 </template>
 
 <script>
-    import {ref, toRaw, reactive, onMounted, watch} from 'vue'
+    import {ref, toRaw, reactive, onMounted, watch, getCurrentInstance} from 'vue'
 
     export default {
         name: 'index',
@@ -181,12 +196,29 @@
             expandAll: {type: Boolean, default: false},
             expands: {type: Array},
         },
+
         setup(props, {emit}) {
             const currentPage = ref(1)
             const dataTable = ref(null)
             const tableConfig = reactive({
                 buttonWidth: 210
             })
+
+            const {proxy} = getCurrentInstance(); //获取上下文实例，ctx=vue2的this , 不推荐这种方式
+            const dict = ref();
+            dict.value = proxy.$global.state.dict; // 字典表
+            console.log(dict);
+
+            // const  formatDict = function(value){
+            //
+            //     console.log(value);
+            //
+            // }
+
+            const formatDict = (value, list) => {
+                const item = list.find(ele => ele.value == value)
+                return item.label || "";
+            }
             onMounted(() => {
                 // 操作列的宽度
                 if (props.buttonGroup.length === 1) {
@@ -240,12 +272,15 @@
                 }
             }
 
+
             // 多选
             function handleSelectionChange(val) {
                 emit(props.selection.eventName, [...val])
             }
 
             return {
+                formatDict,
+                dict,
                 dataTable,
                 tableConfig,
                 currentPage,
@@ -255,6 +290,7 @@
                 handleCurrentChange,
                 handleSelectionChange,
                 rowClick,
+
             }
         },
     }

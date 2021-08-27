@@ -104,10 +104,10 @@
                 selectValue: "name",
                 inputValue: "",
                 option: [{
-                    label: '字典类型名称',
+                    label: '字典名称',
                     value: 'name'
                 }, {
-                    label: '字典类型编码',
+                    label: '字典类型',
                     value: 'dictCode'
                 }]
             })
