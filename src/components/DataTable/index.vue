@@ -12,6 +12,7 @@
                 style="width: 100%"
                 :default-expand-all="expandAll"
                 @selection-change="handleSelectionChange"
+                @row-click="rowClick"
                 :header-cell-style="{background:'#f5f7fa',color:'#002640'}"
         >
             <!--多选-->
@@ -29,9 +30,6 @@
 
 
             <template v-for="col in columns">
-
-
-
 
 
                 <!--状态 1 开启 0 停用-->
@@ -165,7 +163,10 @@
                 fixed: false,
             },
             selection: {
-                eventName: '',          // 多选功能
+                eventName: '',           // 多选功能事件
+                singleEventName: '',     // 单选点击功能事件
+
+                singleData: '',          // 默认单选选中的功能
                 data: []                 // 默认多选的数据
             },
             indexNo: {type: Boolean, default: false}, // 是否展示序号
@@ -198,6 +199,10 @@
             })
             // 默认多选选中
             if (props.selection) {
+                watch(() => props.selection.singleData, (newValue, oldValue) => {
+                    const selectionData = toRaw(newValue);
+                    dataTable.value.setCurrentRow(selectionData);
+                })
                 watch(() => props.selection.data, (newValue, oldValue) => {
                     const selectionData = toRaw(newValue);
                     if (selectionData.length > 0) {
@@ -229,6 +234,12 @@
                 emit(props.getTableData.eventName, props.getTableData.page)
             }
 
+            function rowClick(row, column, event) {
+                if (props.selection && props.selection.singleEventName) {
+                    emit(props.selection.singleEventName, {...row})
+                }
+            }
+
             // 多选
             function handleSelectionChange(val) {
                 emit(props.selection.eventName, [...val])
@@ -243,6 +254,7 @@
                 handleSizeChange,
                 handleCurrentChange,
                 handleSelectionChange,
+                rowClick,
             }
         },
     }

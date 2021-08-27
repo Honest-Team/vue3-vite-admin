@@ -117,6 +117,13 @@ export default [
         component: () => import('/src/views/system/dept/dept.vue'),
         meta: { title: '部门管理', icon: '' },
       },
+
+      {
+        path: 'dict',
+        name: 'dict',
+        component: () => import('/src/views/system/dict/dict.vue'),
+        meta: { title: '字典管理', icon: '' },
+      },
     ],
   },
   {
