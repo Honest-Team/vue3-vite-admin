@@ -5,8 +5,8 @@ export function queryByCondition(data) {
 }
 
 
-export function query(data) {
-    return request.get('/sysRoleService/' + data)
+export function query() {
+    return request.get('/sysRoleService')
 }
 
 

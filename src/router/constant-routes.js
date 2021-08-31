@@ -86,13 +86,6 @@ export default [
         meta: { title: '用户管理', icon: '' },
       },
       {
-        path: 'addUser',
-        name: 'addUser',
-        hidden: true,
-        component: () => import('/src/views/system/user/addUser.vue'),
-        meta: { title: '添加用户', icon: '' },
-      },
-      {
         path: 'role',
         name: 'role',
         component: () => import('/src/views/system/role/role.vue'),

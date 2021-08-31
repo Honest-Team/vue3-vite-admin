@@ -25,12 +25,11 @@
             <el-table-column
                     type="index"
                     :label="indexLabel"
+                    fixed="left"
                     v-if="indexNo"
             ></el-table-column>
 
-
             <template v-for="col in columns">
-
 
                 <!-- 针对字典表翻译-->
                 <el-table-column
@@ -57,8 +56,8 @@
                         :width="col.width"
                 >
                     <template #default="scope">
-                        <el-tag v-if="scope.row[col.prop] === 1" type="success">开启</el-tag>
-                        <el-tag v-if="scope.row[col.prop] === 0" type="danger">停用</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 1" type="success">激活</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 0" type="danger">禁用</el-tag>
                     </template>
                 </el-table-column>
 
@@ -207,13 +206,7 @@
             const {proxy} = getCurrentInstance(); //获取上下文实例，ctx=vue2的this , 不推荐这种方式
             const dict = ref();
             dict.value = proxy.$global.state.dict; // 字典表
-            console.log(dict);
 
-            // const  formatDict = function(value){
-            //
-            //     console.log(value);
-            //
-            // }
 
             const formatDict = (value, list) => {
                 const item = list.find(ele => ele.value == value)

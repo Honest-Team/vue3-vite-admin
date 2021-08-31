@@ -139,3 +139,18 @@ body {
   padding: 20px;
 
 }
+
+//下拉框treeselect
+.vue-treeselect__control {
+  padding: 0 !important;
+  width: unset !important;
+  height: 30px !important;
+}
+
+.vue-treeselect__control-arrow-container {
+  padding-right: 10px !important;
+}
+
+.vue-treeselect--searchable .vue-treeselect__input-container {
+  padding: 0 !important;
+}
