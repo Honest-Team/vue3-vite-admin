@@ -28,7 +28,7 @@
     import {reactive, ref, onMounted} from 'vue'
     import RoleConfig from './roleConfig.vue'
     import HomeConfig from './homeConfig.vue'
-    import {query} from '@/api/sysRoleService'
+    import {queryById} from '@/api/sysRoleService'
     import role from '../role'
     export default {
         name: "editRole",
@@ -49,7 +49,7 @@
                 })
             };
 
-            query(useRoute().query.id).then(res => {
+            queryById(useRoute().query.id).then(res => {
                 form.id = res.data.id;
                 form.name = res.data.name;
                 form.description = res.data.description;

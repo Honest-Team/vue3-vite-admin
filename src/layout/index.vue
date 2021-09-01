@@ -28,12 +28,12 @@
 
     import useLayout from './components/useLayout'
     import {computed, toRefs} from 'vue'
-
+    import {getDictionary} from '/src/store/global.js'
     export default {
         name: 'Layout',
         components: {Settings, AppMain, Sidebar, NavBar, TabBar},
         setup() {
-
+            getDictionary()
             const {state, sidebarWidth, handleSidebarToggle} = useLayout()
             const {fixedHeader, isMobile, unfoldSidebar, showTabBar} = toRefs(state)
 

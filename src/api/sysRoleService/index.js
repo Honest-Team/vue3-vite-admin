@@ -9,6 +9,9 @@ export function query() {
     return request.get('/sysRoleService')
 }
 
+export function queryById(data) {
+    return request.get('/sysRoleService/' + data)
+}
 
 export function save(data) {
     return request.post('/sysRoleService/save', data)

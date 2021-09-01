@@ -10,7 +10,7 @@ export function queryByCondition(data) {
 }
 
 export function getUser(data) {
-    return request.get('/sysUserService/queryByCondition/' + data)
+    return request.get('/sysUserService/' + data)
 }
 
 

@@ -83,7 +83,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="激活状态:">
-                <el-switch v-model="formData.enabled" inactive-value="0" active-value="1" active-color=""
+                <el-switch v-model="formData.enabled" :inactive-value="0" :active-value="1" active-color=""
                            inactive-color=""></el-switch>
             </el-form-item>
         </el-form>
@@ -342,7 +342,7 @@
                 formData.deptId = null;
                 formData.email = "";
                 formData.gender = "";
-                formData.enabled = "1";
+                formData.enabled = 1;
                 formData.phone = "";
                 formData.roles = [];
                 // 查询部门
