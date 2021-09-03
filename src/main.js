@@ -15,7 +15,6 @@ import appIcon from '/src/components/AppIcon/index.vue'
 
 import i18n from './i18n'
 
-console.log(i18n);
 
 const app = createApp(App)
 

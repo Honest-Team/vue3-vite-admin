@@ -54,9 +54,8 @@ export default {
     let lastRoute = null
 
     if (lastChild && !lastChild.hidden && lastChild.name) {
-      // 如果这个路由的path不是外链，就解析成标准的路由对象，否则直接返回它
-      lastRoute = !isExternal(lastChild.path)
-        ? useRouter().resolve({ name: lastChild.name }) // 找到vue-router中唯一标准路由对象
+    //   // 如果这个路由的path不是外链，就解析成标准的路由对象，否则直接返回它
+      lastRoute = !isExternal(lastChild.path) ? useRouter().resolve({ name: lastChild.name }) // 找到vue-router中唯一标准路由对象
         : lastChild
     }
 
@@ -70,6 +69,10 @@ export default {
  * @return {*|null} 如果是直链则返回最后一个节点，不是就返回null
  */
 function hasOneShowingChild(parentNode) {
+  if(parentNode.type === 1){
+    return !parentNode.hidden ? parentNode : null // 遍历到叶节点
+  }
+
   if (!Array.isArray(parentNode.children) || parentNode.children.length === 0) {
     return !parentNode.hidden ? parentNode : null // 遍历到叶节点
   }

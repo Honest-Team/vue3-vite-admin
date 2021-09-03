@@ -3,11 +3,9 @@ import {state as userState, getInfo} from '/src/store/user'
 import {globalRouteUpdateHook} from '/src/layout/components/useLayout'
 import {getToken} from '/src/utils/storage'
 import constantRoutes from './constant-routes'
+import {ElMessage} from 'element-plus'
 
-
-
-import {getCurrentUser} from '/src/store/permission.js'
-
+import {getCurrentUser, currentUser} from '/src/store/permission.js'
 
 
 // [官方文档指路]:(https://next.router.vuejs.org/zh/guide/index.html)
@@ -33,7 +31,6 @@ const router = createRouter({
  *  https://blog.csdn.net/weixin_43835425/article/details/116708448
  */
 router.beforeEach((to, from, next) => {
-
     /**
      * 路由权限
      * 1. 判断是否登录
@@ -47,23 +44,27 @@ router.beforeEach((to, from, next) => {
     let token = getToken()
     // 如果未登录且要访问不在公共路径集合里的路径时，跳转到登录页面并记录之前的页面用于重新访问
     if (!token && !PUBLIC_PATH.has(to.path)) {
-        return {path: '/login', query: {redirect: to.fullPath}}
+        router.push({
+            path: '/login',
+            query: {
+                redirect: to.fullPath
+            }
+        })
+    } else {
+        getCurrentUser();
+        next()
     }
-    // getDictionary();
-    // 获取当前用户
-    getCurrentUser().then(res => {
-        console.log(res);
-    })
 
+    // 获取当前的用户信息
 
-    // 刷新页面之后，存在内存里的数据将会 丢失 ，需要发起请求来获取相关角色等信息
-    // 然后并动态的添加到router上。roles有数据就直接pass
-    let roles = userState.roles && userState.roles.length > 0
-    next()
-    // if (!roles) {
-    //     getInfo() // await 是不能删除的，因为getInfo是 异步 函数
-    //     return to
+    // if (token && currentUser.routers.length === 0) {
+    //     console.log(1);
+    //
+    // } else {
+    //     // 请联系管理员分配权限！
+    //     // ElMessage.warning("请联系管理员分配权限!")
     // }
+
 })
 
 /**
