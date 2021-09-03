@@ -60,7 +60,7 @@ export default {
         handle: () => {
           alert('您选择了登出')
           removeToken()
-          location.reload()
+          window.location.href = "#/login?redirect=" + encodeURIComponent(window.location.hash)
         },
       },
     ])

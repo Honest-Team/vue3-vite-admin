@@ -119,13 +119,13 @@
     >
         <el-form size="small" label-width="120px" :model="formData" :rules="formDataRules" ref="formRef">
             <el-form-item label="旧密码:" prop="oldPass">
-                <el-input v-model="formData.oldPass" placeholder=""></el-input>
+                <el-input type="password" v-model="formData.oldPass" placeholder=""></el-input>
             </el-form-item>
             <el-form-item label="新密码:" prop="newPass">
-                <el-input v-model="formData.newPass" placeholder=""></el-input>
+                <el-input type="password"  v-model="formData.newPass" placeholder=""></el-input>
             </el-form-item>
             <el-form-item label="确认密码:" prop="newPass2">
-                <el-input v-model="formData.newPass2" placeholder=""></el-input>
+                <el-input type="password" v-model="formData.newPass2" placeholder=""></el-input>
             </el-form-item>
         </el-form>
 
@@ -224,7 +224,7 @@
                     {
                         label: '编辑', //复制
                         icon: '',
-                        type: '',
+                        type: 'primary',
                         eventName: 'edit',
                         disabled: function (item) {
                         },
@@ -240,7 +240,7 @@
                     },
                     {
                         label: '更多',
-                        type: 'primary',
+                        type: '',
                         icon: '',
                         dropdownMenu: [
                             {
@@ -440,9 +440,11 @@
                 }
             }
 
-
             function changePass(scope) {
                 formData.id = scope.id;
+                formData.oldPass = "";
+                formData.newPass = "";
+                formData.newPass2 = "";
                 changePassVisible.value = true;
             }
 

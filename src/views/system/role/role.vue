@@ -85,13 +85,24 @@
 <script>
     import DataTable from '@/components/DataTable/index.vue'
     import role from './role'
+    import router from '@/router'
 
     export default {
         components: {DataTable},
-        setup() {
+        setup: function () {
+            // 编辑角色页面
+            function editFn(scope) {
+                router.push({
+                    name: "editRole",
+                    query: {
+                        id: scope.id
+                    }
+                })
+            }
 
             return {
                 ...role,
+                editFn,
             }
         },
     }

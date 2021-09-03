@@ -3,9 +3,11 @@
 import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {queryByCondition, save, update, deleteByIds} from '@/api/sysRoleService'
-import router from "../../../router";
 
 let formRef = ref();
+
+
+
 const formDataRules = {
     name: [{required: true, message: '用户名不能为空'}],
 }
@@ -170,16 +172,6 @@ function selection(val) {
     })
 }
 
-// 编辑角色页面
-function editFn(scope) {
-    router.push({
-        name: "editRole",
-        query: {
-            id: scope.id
-        }
-    })
-}
-
 
 export default {
     formRef,
@@ -196,6 +188,5 @@ export default {
     dialogVisible,
     deletedialog,
     selection,
-    editFn,
 
 }

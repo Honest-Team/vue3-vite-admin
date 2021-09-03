@@ -23,7 +23,7 @@
 
 <script>
 
-    import router from '/src/router'
+    import router from '@/router'
     import { useRoute } from 'vue-router'
     import {reactive, ref, onMounted} from 'vue'
     import RoleConfig from './roleConfig.vue'
@@ -39,12 +39,10 @@
 
         setup() {
             const activeName = ref("first")
-            const form = reactive({
-
-            })
+            const form = reactive({})
             const goBack = () => {
                 router.push({
-                    name: "role",
+                    path: "/system/role",
                     menus: [],
                 })
             };

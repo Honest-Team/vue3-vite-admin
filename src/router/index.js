@@ -51,9 +51,9 @@ router.beforeEach((to, from, next) => {
     }
     // getDictionary();
     // 获取当前用户
-    // getCurrentUser().then(res => {
-    //
-    // })
+    getCurrentUser().then(res => {
+        console.log(res);
+    })
 
 
     // 刷新页面之后，存在内存里的数据将会 丢失 ，需要发起请求来获取相关角色等信息
