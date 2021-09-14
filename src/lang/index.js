@@ -12,11 +12,11 @@ const local = messages[lang];
 
 
 const i18n = createI18n({
-    locale: lang,
-    messages: messages,
+  locale: lang,
+  messages: messages,
 })
 
 export default {
-    i18n,
-    local
-}
+  i18n,
+  local
+};

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
   import { defineComponent } from 'vue'
   import { ElConfigProvider } from 'element-plus'
   import lang from './lang'
