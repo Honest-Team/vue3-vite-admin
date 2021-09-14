@@ -1,12 +1,18 @@
 <template>
     <div class="app-main" :style="{ width: 'calc(100vw - '+ sidebarWidth + ')'}">
-        <router-view v-slot="{ Component }">
-            <!--      <transition name="fade-transform" mode="out-in">-->
-            <keep-alive :include="cachedViewNames">
-                <component :is="Component"/>
-            </keep-alive>
-            <!--      </transition>-->
-        </router-view>
+<!--        <router-view v-slot="{ Component }">-->
+<!--            <component :is="Component"/>-->
+
+<!--&lt;!&ndash;            <transition name="fade-transform" mode="out-in">&ndash;&gt;-->
+<!--&lt;!&ndash;                <keep-alive :include="cachedViewNames">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <component :is="Component"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                </keep-alive>&ndash;&gt;-->
+<!--&lt;!&ndash;            </transition>&ndash;&gt;-->
+<!--        </router-view>-->
+<!--        <transition  :key="$route.path">-->
+            <router-view />
+<!--        </transition>-->
+
     </div>
 </template>
 
@@ -28,6 +34,7 @@
         name: 'AppMain',
         setup() {
             const {state, sidebarWidth} = useLayout()
+            console.log(toRef(state, 'cachedViews'));
             return {
                 cachedViewNames: toRef(state, 'cachedViews'),
                 sidebarWidth,

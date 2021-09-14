@@ -44,16 +44,14 @@
 
 <script>
 import { captcha, login } from '@/api/loginService'
-import { getCurrentUser } from '@/api/sysUserService'
 import { reactive, ref, onMounted } from 'vue'
-
-import router from '/src/router'
-import { login as userLogin } from '../../store/user'
+import { useRouter, useRoute } from 'vue-router'
 import { setToken, removeToken } from '../../utils/storage'
 import { ElMessage } from 'element-plus'
 export default {
   name: 'login',
   setup() {
+    const router = useRouter()
     onMounted(() => {
       // 移除token
       removeToken()
@@ -99,12 +97,11 @@ export default {
           login(form).then((res) => {
             if (res.code == 0) {
               setToken(res.data.token)
-              // getCurrentUser().then((res) => {
-              //
-              // })
+
               router.push({
                 path: router.currentRoute.value.query.redirect || '/',
               })
+
             } else {
               // refreshCode();
               ElMessage.error(res.msg)

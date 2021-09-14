@@ -19,7 +19,9 @@ axios.interceptors.response.use(
     // 响应200
     (response) => {
         // ... doing something
-
+        if (response.data.code == 3002) {
+            ElMessage.error(response.data.msg)
+        }
         return Promise.resolve(response.data)
     },
     // 响应4xx 5xx

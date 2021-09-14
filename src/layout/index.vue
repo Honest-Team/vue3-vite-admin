@@ -1,17 +1,12 @@
 <template>
     <div class="app-wrapper">
-<!--        <div-->
-<!--                class="mask-zIndex99"-->
-<!--                v-if="isMobile && unfoldSidebar"-->
-<!--                @click.self.stop="handleSidebarToggle(false)"-->
-<!--        />-->
+        <!--        <div-->
+        <!--                class="mask-zIndex99"-->
+        <!--                v-if="isMobile && unfoldSidebar"-->
+        <!--                @click.self.stop="handleSidebarToggle(false)"-->
+        <!--        />-->
         <!-- ↑ 移动端模式展开侧边栏出现的遮罩层 ↑   paddingLeft: isMobile ? 0 : sidebarWidth, -->
-
-
-
-        <div class="main-container"      :style="{
-            paddingTop: mainPaddingTopOnFixed,
-            }">
+        <div class="main-container" :style="{paddingTop: mainPaddingTopOnFixed}">
             <!--左侧-->
             <div>
                 <sidebar/>
@@ -30,13 +25,15 @@
 
 <script>
     import {AppMain, NavBar, Settings, Sidebar, TabBar} from './components'
+
     import useLayout from './components/useLayout'
     import {computed, toRefs} from 'vue'
-
+    import {getDictionary} from '/src/store/global.js'
     export default {
         name: 'Layout',
         components: {Settings, AppMain, Sidebar, NavBar, TabBar},
         setup() {
+            getDictionary()
             const {state, sidebarWidth, handleSidebarToggle} = useLayout()
             const {fixedHeader, isMobile, unfoldSidebar, showTabBar} = toRefs(state)
 

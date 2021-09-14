@@ -98,6 +98,9 @@ export const globalRouteUpdateHook = (to) => {
   cachedVisitedView(to)
 }
 
+
+
+
 export default function useLayout() {
   return {
     state,
