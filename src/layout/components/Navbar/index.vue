@@ -42,6 +42,10 @@ import DioAvatar from '/src/assets/dio.jpg'
 import useLayout from '../useLayout'
 import { removeToken } from '/src/utils/storage'
 import { readonly, toRef } from 'vue'
+import { ElMessageBox } from 'element-plus';
+import { logout } from '@/api/loginService'
+
+
 
 export default {
   name: 'Navbar',
@@ -58,9 +62,19 @@ export default {
         title: '退出登录',
         divided: true,
         handle: () => {
-          alert('您选择了登出')
-          removeToken()
-          window.location.href = "#/login?redirect=" + encodeURIComponent(window.location.hash)
+
+          ElMessageBox.alert('确定注销并退出系统吗？','提示',  {
+            confirmButtonText: '确定',
+            callback: (action) => {
+              console.log(action);
+              logout().then((res)=>{
+                if(res.code == 0){
+                  removeToken()
+                  window.location.href = "#/login?redirect=" + encodeURIComponent(window.location.hash)
+                }
+              })
+            },
+          });
         },
       },
     ])

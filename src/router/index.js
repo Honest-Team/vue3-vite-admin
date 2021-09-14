@@ -1,11 +1,9 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
-import {state as userState, getInfo} from '/src/store/user'
 import {globalRouteUpdateHook} from '/src/layout/components/useLayout'
 import {getToken} from '/src/utils/storage'
 import constantRoutes from './constant-routes'
-import {ElMessage} from 'element-plus'
 
-import {getCurrentUser, currentUser} from '/src/store/permission.js'
+import {getCurrentUser} from '/src/store/permission.js'
 
 
 // [官方文档指路]:(https://next.router.vuejs.org/zh/guide/index.html)
@@ -40,7 +38,8 @@ router.beforeEach((to, from, next) => {
      * 3. 构造路由菜单
      *    - 动态拼接菜单
      */
-        // 根据是否有 token 判断用户是否登录
+
+    // 根据是否有 token 判断用户是否登录
     let token = getToken()
     // 如果未登录且要访问不在公共路径集合里的路径时，跳转到登录页面并记录之前的页面用于重新访问
     if (!token && !PUBLIC_PATH.has(to.path)) {
@@ -50,21 +49,13 @@ router.beforeEach((to, from, next) => {
                 redirect: to.fullPath
             }
         })
+    } else if (to.path === "/login") {
+        next()
     } else {
         getCurrentUser();
         next()
+        // next({ ...to, replace: true })
     }
-
-    // 获取当前的用户信息
-
-    // if (token && currentUser.routers.length === 0) {
-    //     console.log(1);
-    //
-    // } else {
-    //     // 请联系管理员分配权限！
-    //     // ElMessage.warning("请联系管理员分配权限!")
-    // }
-
 })
 
 /**

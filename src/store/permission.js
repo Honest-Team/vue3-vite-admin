@@ -69,8 +69,9 @@ const routerPackag = routers => {
         } else if (itemRouter.type == 0) {
             // 动态添加路由【目录】
             router.addRoute({
-                path: `/${itemRouter.path}`,
+                path: itemRouter.path ? "/" + itemRouter.path : "/",
                 name: itemRouter.path,
+                redirect: itemRouter.redirect,
                 component: Layout,
                 meta: {
                     id: itemRouter.id,
@@ -80,7 +81,8 @@ const routerPackag = routers => {
             });
             // 构建左侧菜单
             itemRouter.name = itemRouter.path;
-            itemRouter.path = `/${itemRouter.path}`;
+            itemRouter.redirect = itemRouter.redirect;
+            itemRouter.path = itemRouter.path ? "/" + itemRouter.path : "/";
             itemRouter.component = Layout;
             itemRouter.hidden = itemRouter.hidden ? false : true;
             itemRouter.meta = {};

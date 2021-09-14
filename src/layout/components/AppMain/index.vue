@@ -9,8 +9,10 @@
 <!--&lt;!&ndash;                </keep-alive>&ndash;&gt;-->
 <!--&lt;!&ndash;            </transition>&ndash;&gt;-->
 <!--        </router-view>-->
+<!--        <transition  :key="$route.path">-->
+            <router-view  :key="$route.path" />
+<!--        </transition>-->
 
-        <router-view  :key="$route.path" />
     </div>
 </template>
 

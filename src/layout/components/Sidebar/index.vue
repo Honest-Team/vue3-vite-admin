@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { state as userState } from '/src/store/user'
+// import { state as userState } from '/src/store/user'
 import SidebarLogo from './SidebarLogo.vue'
 import SidebarItem from './SidebarItem.vue'
 import useLayout from '../useLayout.js'
@@ -29,7 +29,7 @@ import { currentUser} from '/src/store/permission.js'
 export default {
   name: 'Sidebar',
   components: { SidebarLogo, SidebarItem },
-  setup() {
+  setup() { debugger
     const { state, sidebarWidth } = useLayout()
     const { showLogo, unfoldSidebar } = toRefs(state)
 

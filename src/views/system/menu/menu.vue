@@ -85,6 +85,12 @@
                     </el-form-item>
                 </div>
 
+                <div class="flex-justify-between">
+                    <el-form-item label="重定向" prop="redirect">
+                        <el-input v-model="formData.redirect" placeholder="匹配组件redirect字段"></el-input>
+                    </el-form-item>
+                </div>
+
 
             </div>
 
@@ -149,6 +155,12 @@
                         <el-input v-model="formData.component" placeholder="匹配组件component字段"></el-input>
                     </el-form-item>
                 </div>
+
+                <div class="flex-justify-between">
+                    <el-form-item label="重定向" prop="redirect">
+                        <el-input v-model="formData.redirect" placeholder="匹配组件redirect字段"></el-input>
+                    </el-form-item>
+                </div>
             </div>
             <!--按钮-->
             <div v-if="formData.type === 2">
@@ -168,7 +180,8 @@
             </div>
 
             <el-form-item label="上级类目" prop="parentId" v-if="dialogVisible">
-                <treeselect ref="treeselect"  v-model="formData.parentId"  :options="pidOptions" :normalizer="normalizer"/>
+                <treeselect ref="treeselect" v-model="formData.parentId" :options="pidOptions"
+                            :normalizer="normalizer"/>
             </el-form-item>
         </el-form>
 
@@ -200,7 +213,7 @@
 <script>
     import DataTable from '@/components/DataTable/index.vue'
     import {getTreeByCondition, save, update, deleteByIds} from '@/api/sysMenuService'
-    import {onMounted,watch, reactive, ref,toRefs} from 'vue'
+    import {onMounted, watch, reactive, ref, toRefs} from 'vue'
     import {getTree} from './menu.js'
     import Treeselect from 'vue3-treeselect'
     import 'vue3-treeselect/dist/vue3-treeselect.css'
@@ -217,7 +230,6 @@
             let pidOptions = ref([]);
             let formRef = ref();
             let treeselect = ref();
-
 
 
             function normalizer(node) {
@@ -238,6 +250,7 @@
                         label: '菜单标题',
                         prop: 'title',
                         width: "200",
+                        align: "left",
                         sort: true,
                     },
                     {
@@ -338,6 +351,7 @@
                 formData.icon = "";
                 formData.title = "";
                 formData.name = "";
+                formData.redirect = "";
                 formData.component = "";
                 formData.permission = null;
                 getTree(function (data) {
@@ -415,6 +429,7 @@
                 formData.cached = scope.cached;
                 formData.path = scope.path;
                 formData.title = scope.title;
+                formData.redirect = scope.redirect;
                 formData.icon = scope.icon;
                 formData.name = scope.name;
                 formData.component = scope.component;
