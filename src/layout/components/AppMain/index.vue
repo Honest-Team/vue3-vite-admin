@@ -10,7 +10,7 @@
 <!--&lt;!&ndash;            </transition>&ndash;&gt;-->
 <!--        </router-view>-->
 <!--        <transition  :key="$route.path">-->
-            <router-view  :key="$route.path" />
+            <router-view />
 <!--        </transition>-->
 
     </div>

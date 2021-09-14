@@ -4,7 +4,7 @@ import en from './en.js'
 import zh from './zh.js'
 
 
-const lang = "en";
+const lang = "zh";
 
 const messages = { en, zh };
 
