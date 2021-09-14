@@ -6,3 +6,7 @@ export function captcha() {
 export function login(data) {
   return request.post('/loginService/login', data)
 }
+
+export function logout() {
+  return request.get('/loginService/logout')
+}

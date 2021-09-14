@@ -1,21 +1,23 @@
 <template>
-    <div style=";padding: 0 20px;background: white">
+    <div style=";padding: 0 20px 20px;background: white">
         <el-table
                 ref="dataTable"
                 highlight-current-row
                 :data="getTableData.data"
                 :height="height"
-                :border="tableBorder"
+                :border="border"
                 :tree-props="treeProps"
                 :row-key="rowKey"
                 :expand-row-keys="expands"
                 style="width: 100%"
+                :default-expand-all="expandAll"
                 @selection-change="handleSelectionChange"
+                @row-click="rowClick"
                 :header-cell-style="{background:'#f5f7fa',color:'#002640'}"
         >
             <!--多选-->
             <el-table-column
-                    v-if="selection.eventName"
+                    v-if="selection && selection.eventName"
                     type="selection"
                     width="46">
             </el-table-column>
@@ -23,14 +25,62 @@
             <el-table-column
                     type="index"
                     :label="indexLabel"
+                    fixed="left"
                     v-if="indexNo"
             ></el-table-column>
 
-
             <template v-for="col in columns">
+
+                <!-- 针对字典表翻译-->
+                <el-table-column
+                        v-if="dict[col.type]"
+                        :sortable="col.sort"
+                        :align="col.align ? col.align : 'center'"
+                        :prop="col.prop"
+                        :label="col.label"
+                        :width="col.width"
+                >
+                    <template #default="scope">
+                        <span>{{ formatDict(scope.row[col.prop],dict[col.type])}}</span>
+                    </template>
+                </el-table-column>
+
+
+                <!--状态 1 开启 0 停用-->
+                <el-table-column
+                        v-else-if="col.type === 'enabled'"
+                        :sortable="col.sort"
+                        :align="col.align ? col.align : 'center'"
+                        :prop="col.prop"
+                        :label="col.label"
+                        :width="col.width"
+                >
+                    <template #default="scope">
+                        <el-tag v-if="scope.row[col.prop] === 1" type="success">激活</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 0" type="danger">禁用</el-tag>
+                    </template>
+                </el-table-column>
+
+                <!--菜单 2 按钮  1 菜单 0 目录 -->
+                <el-table-column
+                        v-else-if="col.type === 'menuType'"
+                        :sortable="col.sort"
+                        :align="col.align ? col.align : 'center'"
+                        :prop="col.prop"
+                        :label="col.label"
+                        :width="col.width"
+                >
+                    <template #default="scope">
+                        <el-tag v-if="scope.row[col.prop] === 0" type="success">目录</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 1" type="danger">菜单</el-tag>
+                        <el-tag v-if="scope.row[col.prop] === 2" type="warning">按钮</el-tag>
+                    </template>
+                </el-table-column>
+
+
                 <!-- 格式化各种日期 - 名称自定义 type设置为formatTime 时生效-->
                 <el-table-column
-                        v-if="col.type === 'formatTime' ||col.prop ===  'createTime' ||col.prop ===  'updateTime'"
+                        v-else-if="col.type === 'formatTime' ||col.prop ===  'createTime' ||col.prop ===  'updateTime'"
                         :sortable="col.sort"
                         :align="col.align ? col.align : 'center'"
                         :prop="col.prop"
@@ -51,7 +101,8 @@
                 ></el-table-column>
             </template>
             <!--表格按钮操作-->
-            <el-table-column label="操作" v-if="buttonGroup.length > 0" :width="tableConfig.buttonWidth" align="center">
+            <el-table-column label="操作" v-if="buttonGroup.length > 0" :width="tableConfig.buttonWidth" fixed="right"
+                             align="center">
                 <template #default="scope">
                     <el-button-group>
                         <!-- 控制显示隐藏 -->
@@ -93,6 +144,7 @@
         </el-table>
         <!--分页 hide-on-single-page-->
         <el-pagination
+                v-if="getTableData.page"
                 style="display: flex; justify-content: center;height: 50px;align-items: center;"
                 small
                 current-page="currentPage"
@@ -108,7 +160,7 @@
 </template>
 
 <script>
-    import {ref, toRaw, reactive, onMounted, watch} from 'vue'
+    import {ref, toRaw, reactive, onMounted, watch, getCurrentInstance} from 'vue'
 
     export default {
         name: 'index',
@@ -125,22 +177,41 @@
                 fixed: false,
             },
             selection: {
-                eventName: '',          // 多选功能
+                eventName: '',           // 多选功能事件
+                singleEventName: '',     // 单选点击功能事件
+
+                singleData: '',          // 默认单选选中的功能
                 data: []                 // 默认多选的数据
             },
             indexNo: {type: Boolean, default: false}, // 是否展示序号
-            tableBorder: {type: Boolean, default: false}, // 是否带有纵向边框
-            rowKey: {type: String},
-            treeProps: {type: Object},
-            isExpand: {type: Boolean, default: false},
+            border: {type: Boolean, default: false}, // 是否带有纵向边框
+            rowKey: {type: String, default: "id"},
+            treeProps: {
+                type: Object, default: {
+                    hasChildren: 'hasChildren',
+                    children: 'children'
+                }
+            },
+            expandAll: {type: Boolean, default: false},
             expands: {type: Array},
         },
+
         setup(props, {emit}) {
             const currentPage = ref(1)
             const dataTable = ref(null)
             const tableConfig = reactive({
                 buttonWidth: 210
             })
+
+            const {proxy} = getCurrentInstance(); //获取上下文实例，ctx=vue2的this , 不推荐这种方式
+            const dict = ref();
+            dict.value = proxy.$global.state.dict; // 字典表
+
+
+            const formatDict = (value, list) => {
+                const item = list.find(ele => ele.value == value)
+                return item.label || "";
+            }
             onMounted(() => {
                 // 操作列的宽度
                 if (props.buttonGroup.length === 1) {
@@ -152,22 +223,28 @@
                 }
             })
             // 默认多选选中
-            watch(() => props.selection.data, (newValue, oldValue) => {
-                const selectionData = toRaw(newValue);
-                if (selectionData.length > 0) {
-                    selectionData.forEach(ele => {
-                        dataTable.value.toggleRowSelection(ele);
-                    })
-                }
-            })
+            if (props.selection) {
+                watch(() => props.selection.singleData, (newValue, oldValue) => {
+                    const selectionData = toRaw(newValue);
+                    dataTable.value.setCurrentRow(selectionData);
+                })
+                watch(() => props.selection.data, (newValue, oldValue) => {
+                    const selectionData = toRaw(newValue);
+                    if (selectionData.length > 0) {
+                        selectionData.forEach(ele => {
+                            dataTable.value.toggleRowSelection(ele);
+                        })
+                    }
+                })
+            }
 
             // 操作按钮
             function buttonHandler(eventName, scope) {
-                emit(eventName, scope)
+                emit(eventName, {...scope})
             }
 
             function handleCommand(drop) {
-                emit(drop.eventName, drop.scope)
+                emit(drop.eventName, {...drop.scope})
             }
 
             function handleSizeChange(val) {
@@ -182,12 +259,21 @@
                 emit(props.getTableData.eventName, props.getTableData.page)
             }
 
+            function rowClick(row, column, event) {
+                if (props.selection && props.selection.singleEventName) {
+                    emit(props.selection.singleEventName, {...row})
+                }
+            }
+
+
             // 多选
             function handleSelectionChange(val) {
-                emit(props.selection.eventName, val)
+                emit(props.selection.eventName, [...val])
             }
 
             return {
+                formatDict,
+                dict,
                 dataTable,
                 tableConfig,
                 currentPage,
@@ -196,6 +282,8 @@
                 handleSizeChange,
                 handleCurrentChange,
                 handleSelectionChange,
+                rowClick,
+
             }
         },
     }

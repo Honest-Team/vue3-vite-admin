@@ -1,4 +1,4 @@
-import { login as userLogin } from '/src/store/user'
+// import { login as userLogin } from '/src/store/user'
 import { computed, reactive, ref } from 'vue'
 import router from '/src/router'
 
@@ -35,11 +35,11 @@ function handleLogin() {
     if (valid) {
       console.log('login success')
       // 表单校验通过，发起ajax请求然后保存必要的token、roles最后路由跳转
-      userLogin(loginFormRef).then(() => {
-        router.push({
-          path: router.currentRoute.value.query.redirect || '/',
-        })
-      })
+      // userLogin(loginFormRef).then(() => {
+      //   router.push({
+      //     path: router.currentRoute.value.query.redirect || '/',
+      //   })
+      // })
     } else {
       console.log('login fail because ', valid)
       return false
