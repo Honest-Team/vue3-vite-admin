@@ -24,3 +24,5 @@ app.component('app-icon', appIcon)
 app.config.globalProperties.$store = store
 app.config.globalProperties.$global = global
 app.mount('#app')
+
+console.log("abcd")
